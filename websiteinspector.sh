@@ -41,7 +41,7 @@ function tlsexpire()
                 echo -e "\e[1;33mTLS-Certificate expire in $d days\e[0m"
                 if [ $d -gt 14 ]
 		then
-			echo -e "\e[1;34mTLS-Certifikat OK\e[0m"
+			echo -e "\e[1;33mTLS-Certifikat OK\e[0m"
                         grep -q "$x TLS-Certificate" "${TMPFILE}"
                         if [ $? -eq 0 ]
                         then
@@ -89,7 +89,7 @@ do
 	then
 		echo ""
 		echo "+++URL: $i" 
-		echo "HTTP Statuscode = $CODE OK"
+		echo -e "\e[1;33mHTTP Statuscode = $CODE OK\e[0m"
 		grep -q "$i HTTP Statuscode" "${TMPFILE}"
 		if [ $? -eq 0 ]
 		then
@@ -101,12 +101,12 @@ do
 	TIME=$(curl -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null | awk -F \, '{print $1}')
         if [ "$TIME" -lt 3 ]
         then
-		echo "HTTP Timetotal = $TIME OK"
+		echo -e "\e[1;33mHTTP Timetotal = $TIME OK\e[0m"
 		grep -q "$i HTTP Timetotal" "${TMPFILE}"
 		if [ $? -eq 0 ]
 		then
 			sed -i "\,$i HTTP Timetotal,d" "${TMPFILE}"
-			echo "$i HTTP Timetotal = $TIME WARNING -> OK" | mailx -s "HTTP Timetotal for $i WARNING -> OK" -r ${MAILFROM} ${MAILTO}
+			echo -e "\e[1;31m$i HTTP Timetotal = $TIME WARNING -> OK\e[0m" | mailx -s "HTTP Timetotal for $i WARNING -> OK" -r ${MAILFROM} ${MAILTO}
 		fi
          elif [ "$TIME" -ge 8 ]
          then
@@ -116,7 +116,7 @@ do
 			echo "$i HTTP Timetotal = $TIME WARNING (is on the list)"
 			continue
 		fi
-		echo "HTTP Timetotal = $TIME WARNING"
+		echo -e "\e[1;31mHTTP Timetotal = $TIME WARNING\e[0m"
                 echo "$i HTTP Timetotal = $TIME WARNING" >> "${TMPFILE}"	
                 echo "$i HTTP Timetotal = $TIME WARNING" | mailx -s "HTTP TIME $i = $TIME WARNING" -r ${MAILFROM} ${MAILTO}
                 
