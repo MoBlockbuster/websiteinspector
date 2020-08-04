@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Skript to monitor the HTTP-CODE, the HTTP response time  and the TLS-TTL for any websites with mail notification
+# Skript to monitor the HTTP-CODE, the HTTP response time and the TLS-TTL for any websites with mail notification
 
-WEBSITES="https://github.com"
+WEBSITES="https://github.com http://www.postfix.org/"
 MAILFROM=""
 MAILTO=""
 TMPFILE="/tmp/websiteinspector.log"
 TLSTTLWARN="14"
 TLSTTLCRIT="7"
+WEBARRAY=("")
 
 # Show all monitored websites with parameter -s
 if [ "$1" == "-s" ]
@@ -19,6 +20,27 @@ then
 	exit 0
 fi
 
+# Remove last slash
+for i in $WEBSITES
+do
+	DIRTYURL=$(echo "${i: -1}")
+	echo ""
+	if [ $DIRTYURL = "/" ]
+	then
+		echo "Slash >/< detected"
+		CLEANURL=${i::-1}
+		WEBARRAY+=("$CLEANURL")
+		echo -e "New URL: \e[1;33m$CLEANURL\e[0m"
+	else
+		echo "No slash >/< found"
+		WEBARRAY+=("$i")
+		echo -e "URL is OK: \e[1;33m$i\e[0m"
+	fi
+done
+
+# Adjusted URL
+WEBSITES=${WEBARRAY[@]}
+
 if [ ! -f "${TMPFILE}" ]
 then
 	echo -e "This file is managed by websiteinspector.sh.\nPlease do not change anything here!\nHTTP problemes:" > "${TMPFILE}"
@@ -27,11 +49,11 @@ fi
 function tlsexpire()
 {
 	x=$(echo ${i##*/})
-	timeout 2 bash -c "</dev/tcp/"$x"/443"
+	timeout 2 bash -c "</dev/tcp/"$x"/443" &>/dev/null
 	RC_PORTCHECK=$?
 	if [ $RC_PORTCHECK -ne "0" ]
 	then
-		echo "HTTPS Port 443 seems to be closed"
+		echo -e "\e[1;31mHTTPS Port 443 seems to be closed\e[0m"
 	else
 		TLS=$(echo | openssl s_client -connect "$x:443" -servername $x 2>/dev/null | openssl x509 -noout -dates | grep notAfter | sed -e 's#notAfter=##')
                 a=$(date -d "$TLS" +%s)
@@ -88,7 +110,7 @@ do
 	if [ "$CODE" -eq 200  ]
 	then
 		echo ""
-		echo "+++URL: $i" 
+		echo -e "\e[1;34m+++URL: $i\e[0m" 
 		echo -e "\e[1;33mHTTP Statuscode = $CODE OK\e[0m"
 		grep -q "$i HTTP Statuscode" "${TMPFILE}"
 		if [ $? -eq 0 ]
