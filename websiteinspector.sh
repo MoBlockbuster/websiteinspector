@@ -7,7 +7,19 @@ MAILTO=""
 TMPFILE="/tmp/websiteinspector.log"
 TLSTTLWARN="14"
 TLSTTLCRIT="7"
+HTTPRESPTIME="3"
 WEBARRAY=("")
+
+
+# Show current settings
+echo -e "\e[1;31m---------------------------\e[0m"
+echo -e "\e[1;33mMy current settings:\e[0m"
+echo "MAILFROM: $MAILFROM"
+echo "MAILTO: $MAILTO"
+echo "TLSWARNING: $TLSTTLWARN"
+echo "TLSCRITICAL: $TLSTTLCRIT"
+echo "HTTP-RESP-TIME: $HTTPRESPTIME"
+echo -e "\e[1;31m---------------------------\e[0m"
 
 # Show all monitored websites with parameter -s
 if [ "$1" == "-s" ]
@@ -24,17 +36,16 @@ fi
 for i in $WEBSITES
 do
 	DIRTYURL=$(echo "${i: -1}")
-	echo ""
 	if [ $DIRTYURL = "/" ]
 	then
-		echo "Slash >/< detected"
+		#echo "Slash >/< detected"
 		CLEANURL=${i::-1}
 		WEBARRAY+=("$CLEANURL")
-		echo -e "New URL: \e[1;33m$CLEANURL\e[0m"
+		#echo -e "New URL: \e[1;33m$CLEANURL\e[0m"
 	else
-		echo "No slash >/< found"
+		#echo "No slash >/< found"
 		WEBARRAY+=("$i")
-		echo -e "URL is OK: \e[1;33m$i\e[0m"
+		#echo -e "URL is OK: \e[1;33m$i\e[0m"
 	fi
 done
 
@@ -61,7 +72,7 @@ function tlsexpire()
                 c=$((a-b))
                 d=$((c/3600/24))
                 echo -e "\e[1;33mTLS-Certificate expire in $d days\e[0m"
-                if [ $d -gt 14 ]
+                if [ $d -gt $TLSTTLWARN ]
 		then
 			echo -e "\e[1;33mTLS-Certifikat OK\e[0m"
                         grep -q "$x TLS-Certificate" "${TMPFILE}"
@@ -70,7 +81,7 @@ function tlsexpire()
                 	        sed -i "\,$x TLS-Certificate,d" "${TMPFILE}"
                                 echo -e "\e[1;31m$x TLS-Certificate expire in $d days -> OK\e[0m" | mailx -s "TLSCertificate for $x expire in $d days -> OK" -r ${MAILFROM} ${MAILTO}
                         fi
-		elif [ $d -le 14 ] && [ $d -gt 7 ]
+		elif [ $d -le $TLSTTLWARN ] && [ $d -gt $TLSTTLCRIT ]
                 then
                         echo -e "\e[1;31mTLS-Certifikate WARNING\e[0m"
                         grep -q "$x TLS-Certificate-WARNING" "${TMPFILE}"
@@ -80,7 +91,7 @@ function tlsexpire()
                         fi
                         echo -e "\e[1;31m$x TLS-Certificate-WARNING = $d Tage INFO\e[0m" >> "${TMPFILE}"
                         echo -e "\e[1;31m$x TLS-Certificate-WARNING expire in $d days for $x\e[0m" | mailx -s "TLS-Certifikate WARNING $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
-                elif [ $d -le 7 ]
+                elif [ $d -le $TLSTTLCRIT ]
                 then
                         echo -e "\e[1;31mTLS-Certificate ALARM\e[0m"
                         grep -q "$x TLS-Certificate-ALARM" "${TMPFILE}"
@@ -121,7 +132,7 @@ do
 		tlsexpire
 	fi
 	TIME=$(curl -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null | awk -F \, '{print $1}')
-        if [ "$TIME" -lt 3 ]
+        if [ "$TIME" -lt "$HTTPRESPTIME" ]
         then
 		echo -e "\e[1;33mHTTP Timetotal = $TIME OK\e[0m"
 		grep -q "$i HTTP Timetotal" "${TMPFILE}"
