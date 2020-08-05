@@ -5,6 +5,7 @@ This tool has been programmed to monitor all of your desired websites. The webin
 
 ### Requirements:
 - SSH access
+- Bash as a shell
 - A working mailserver
 - Tool mailx to send mails
 - Create a cronjob
