@@ -37,7 +37,7 @@ then
 	exit 0
 fi
 
-# Remove last slash
+# Remove the last slash
 for i in $WEBSITES
 do
 	DIRTYURL=$(echo "${i: -1}")
