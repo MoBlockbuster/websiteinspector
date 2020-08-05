@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Skript to monitor the HTTP-CODE, the HTTP response time and the TLS-TTL for any websites with mail notification
 
-
 WEBSITES="https://github.com http://www.postfix.org/"
 MAILFROM=""
 MAILTO=""
@@ -10,7 +9,6 @@ TLSTTLWARN="14"
 TLSTTLCRIT="7"
 HTTPRESPTIME="3"
 WEBARRAY=("")
-
 
 # System variables. Do not change this!
 CURL=$(which curl)
