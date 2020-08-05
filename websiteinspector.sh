@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Skript to monitor the HTTP-CODE, the HTTP response time and the TLS-TTL for any websites with mail notification
 
+
 WEBSITES="https://github.com http://www.postfix.org/"
 MAILFROM=""
 MAILTO=""
@@ -9,6 +10,12 @@ TLSTTLWARN="14"
 TLSTTLCRIT="7"
 HTTPRESPTIME="3"
 WEBARRAY=("")
+
+
+# System variables. Do not change this!
+CURL=$(which curl)
+OSSL=$(which openssl)
+MAILX=$(which mailx)
 
 
 # Show current settings
@@ -50,7 +57,7 @@ do
 done
 
 # Adjusted URL
-WEBSITES=${WEBARRAY[@]}
+WEBSITES=${WEBARRAY[*]}
 
 if [ ! -f "${TMPFILE}" ]
 then
@@ -60,13 +67,13 @@ fi
 function tlsexpire()
 {
 	x=$(echo ${i##*/})
-	timeout 2 bash -c "</dev/tcp/"$x"/443" &>/dev/null
+	timeout 2 bash -c "</dev/tcp/$x/443" &>/dev/null
 	RC_PORTCHECK=$?
 	if [ $RC_PORTCHECK -ne "0" ]
 	then
 		echo -e "\e[1;31mHTTPS Port 443 seems to be closed\e[0m"
 	else
-		TLS=$(echo | openssl s_client -connect "$x:443" -servername $x 2>/dev/null | openssl x509 -noout -dates | grep notAfter | sed -e 's#notAfter=##')
+		TLS=$(echo | $OSSL s_client -connect "$x:443" -servername $x 2>/dev/null | $OSSL x509 -noout -dates | grep notAfter | sed -e 's#notAfter=##')
                 a=$(date -d "$TLS" +%s)
                 b=$(date +%s)
                 c=$((a-b))
@@ -79,7 +86,7 @@ function tlsexpire()
                         if [ $? -eq 0 ]
                         then
                 	        sed -i "\,$x TLS-Certificate,d" "${TMPFILE}"
-                                echo -e "\e[1;31m$x TLS-Certificate expire in $d days -> OK\e[0m" | mailx -s "TLSCertificate for $x expire in $d days -> OK" -r ${MAILFROM} ${MAILTO}
+                                echo -e "\e[1;31m$x TLS-Certificate expire in $d days -> OK\e[0m" | $MAILX -s "TLSCertificate for $x expire in $d days -> OK" -r ${MAILFROM} ${MAILTO}
                         fi
 		elif [ $d -le $TLSTTLWARN ] && [ $d -gt $TLSTTLCRIT ]
                 then
@@ -87,20 +94,20 @@ function tlsexpire()
                         grep -q "$x TLS-Certificate-WARNING" "${TMPFILE}"
                         if [ $? -eq 0 ]
                         then
-                                continue
+                                return
                         fi
                         echo -e "\e[1;31m$x TLS-Certificate-WARNING = $d Tage INFO\e[0m" >> "${TMPFILE}"
-                        echo -e "\e[1;31m$x TLS-Certificate-WARNING expire in $d days for $x\e[0m" | mailx -s "TLS-Certifikate WARNING $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
+                        echo -e "\e[1;31m$x TLS-Certificate-WARNING expire in $d days for $x\e[0m" | $MAILX -s "TLS-Certifikate WARNING $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
                 elif [ $d -le $TLSTTLCRIT ]
                 then
                         echo -e "\e[1;31mTLS-Certificate ALARM\e[0m"
                         grep -q "$x TLS-Certificate-ALARM" "${TMPFILE}"
                         if [ $? -eq 0 ]
                         then
-                                continue
+                                return
                         fi
                         echo -e "\e[1;31m$x TLS-Certificate-ALARM = $d Tage ALARM\e[0m" >> "${TMPFILE}"
-                        echo -e "\e[1;31m$x TLS-Certificate-ALARM expire in $d days\e[0m" | mailx -s "TLS-Certifikate ALARM $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
+                        echo -e "\e[1;31m$x TLS-Certificate-ALARM expire in $d days\e[0m" | $MAILX -s "TLS-Certifikate ALARM $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
                 elif [ $d -eq 0 ]
                 then
                         echo -e "\e[1;31mTLS-Certifikate ZERODAY-ALARM\e[0m"
@@ -110,14 +117,14 @@ function tlsexpire()
                                 return
                         fi
                         echo -e "\e[1;31m$x TLS-Certificate ZERODAY-ALARM = $d Tage ZERODAY-ALARM\e[0m" >> "${TMPFILE}"
-                        echo -e "\e[1;31m$x TLS-Certificate ist expire. Lifetime = $d days\e[0m" | mailx -s "TLS-Certifikate ZERODAY-ALARM für $x" -r ${MAILFROM} ${MAILTO}
+                        echo -e "\e[1;31m$x TLS-Certificate ist expire. Lifetime = $d days\e[0m" | $MAILX -s "TLS-Certifikate ZERODAY-ALARM für $x" -r ${MAILFROM} ${MAILTO}
                 fi
 	fi
 }
 
 for i in $WEBSITES
 do
-	CODE=$(curl -L --user-agent "websiteinspector" --write-out "%{http_code}\n" --silent --output /dev/null $i)
+	CODE=$($CURL -L --user-agent "websiteinspector" --write-out "%{http_code}\n" --silent --output /dev/null $i)
 	if [ "$CODE" -eq 200  ]
 	then
 		echo ""
@@ -127,11 +134,11 @@ do
 		if [ $? -eq 0 ]
 		then
 			sed -i "\,$i HTTP Statuscode,d" "${TMPFILE}"
-			echo "$i HTTP Statuscode = $CODE ERROR -> OK" | mailx -s "HTTP Statuscode for $i ERROR -> OK" -r ${MAILFROM} ${MAILTO}
+			echo "$i HTTP Statuscode = $CODE ERROR -> OK" | $MAILX -s "HTTP Statuscode for $i ERROR -> OK" -r ${MAILFROM} ${MAILTO}
 	        fi
 		tlsexpire
 	fi
-	TIME=$(curl -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null | awk -F \, '{print $1}')
+	TIME=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null | awk -F \, '{print $1}')
         if [ "$TIME" -lt "$HTTPRESPTIME" ]
         then
 		echo -e "\e[1;33mHTTP Timetotal = $TIME OK\e[0m"
@@ -139,7 +146,7 @@ do
 		if [ $? -eq 0 ]
 		then
 			sed -i "\,$i HTTP Timetotal,d" "${TMPFILE}"
-			echo -e "\e[1;31m$i HTTP Timetotal = $TIME WARNING -> OK\e[0m" | mailx -s "HTTP Timetotal for $i WARNING -> OK" -r ${MAILFROM} ${MAILTO}
+			echo -e "\e[1;31m$i HTTP Timetotal = $TIME WARNING -> OK\e[0m" | $MAILX -s "HTTP Timetotal for $i WARNING -> OK" -r ${MAILFROM} ${MAILTO}
 		fi
          elif [ "$TIME" -ge 8 ]
          then
@@ -151,7 +158,7 @@ do
 		fi
 		echo -e "\e[1;31mHTTP Timetotal = $TIME WARNING\e[0m"
                 echo "$i HTTP Timetotal = $TIME WARNING" >> "${TMPFILE}"	
-                echo "$i HTTP Timetotal = $TIME WARNING" | mailx -s "HTTP TIME $i = $TIME WARNING" -r ${MAILFROM} ${MAILTO}
+                echo "$i HTTP Timetotal = $TIME WARNING" | $MAILX -s "HTTP TIME $i = $TIME WARNING" -r ${MAILFROM} ${MAILTO}
                 
 	else
 		echo ""
@@ -162,7 +169,7 @@ do
 		then
 			continue
 		fi
-		echo "$i HTTP Statuscode = $CODE OK -> ERROR" | mailx -s "HTTP Statuscode for $i OK -> ERROR" -r ${MAILFROM} ${MAILTO}
+		echo "$i HTTP Statuscode = $CODE OK -> ERROR" | $MAILX -s "HTTP Statuscode for $i OK -> ERROR" -r ${MAILFROM} ${MAILTO}
 		echo "$i HTTP Statuscode = $CODE ERROR" >> "${TMPFILE}"
 	fi
 
