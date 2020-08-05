@@ -1,7 +1,7 @@
 # websiteinspector
 Bashtool to monitor any website for HTTP-CODE, TLS-TTL and the HTTP response time. You will get an mail notification for each alarm.
 
-This tool has been programmed to monitor all of your desired websites. The webinspector detected automatically if a website use HTTPS (443) or only HTTP (80).
+This tool has been programmed to monitor all of your desired websites. The webinspector detected automatically if a website use HTTPS (443) and also checks the expire of the TLS certificate. If the website use only HTTP (80) the webinspector check the site without the TLS-TTL.
 
 ### Requirements:
 - SSH access
