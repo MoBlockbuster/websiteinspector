@@ -19,6 +19,7 @@ This tool has been programmed to monitor all of your desired websites. The webin
 - If websiteinspector not found an HTTP-CODE 200, this is treated as an error
 - If the TLS-TTL (SSL certificate expire date) is lower then 14 days and higher then 7 days this will be handled as **warning**
 - If the TLS-TTL (SSL certificate expire date) is lower then 7 days this will be handled as **alarm**
+- If the website takes longer then 3 seconds to load this will be handled as **alarm**
 
 ### Usage:
 - Save the webinspector.sh on the server used to monitor other websites
