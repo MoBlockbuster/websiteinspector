@@ -25,6 +25,9 @@ grep -q MAILTO $WEBCNF || echo "MAILTO=\"\"" >> $WEBCNF
 grep -q TLSTTLWARN $WEBCNF || echo "TLSTTLWARN=\"14\"" >> $WEBCNF
 grep -q TLSTTLCRIT $WEBCNF || echo "TLSTTLCRIT=\"7\"" >> $WEBCNF
 grep -q HTTPRESPTIME $WEBCNF || echo "HTTPRESPTIME=\"3\"" >> $WEBCNF
+grep -q TMPFILE $WEBCNF || echo "TMPFILE=\"/tmp/websiteinspector.log\"" >> $WEBCNF
+
+source $WEBCNF
 
 # Show current settings
 echo -e "\e[1;31m---------------------------\e[0m"
