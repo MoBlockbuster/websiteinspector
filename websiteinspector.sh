@@ -15,7 +15,7 @@ MAILX=$(which mailx)
 # Create config for me. Do not change this!
 if [ ! -f $WEBCNF ]
 then
-	echo -e "\e[1;33mI create my config\e[0m"
+	echo -e "\e[1;33mI create my config. Please check my config: $WEBCNF\e[0m"
 	touch $WEBCNF
 fi
 
