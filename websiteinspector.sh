@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 # Skript to monitor the HTTP-CODE, the HTTP response time and the TLS-TTL for any websites with mail notification
+#######################################
+# Author on GitHub: MoBlockbuster
+#######################################
 
 WEBSITES="https://github.com http://www.postfix.org/"
 MAILFROM=""
