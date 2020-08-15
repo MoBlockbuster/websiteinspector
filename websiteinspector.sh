@@ -1,23 +1,30 @@
 #!/usr/bin/env bash
 # Skript to monitor the HTTP-CODE, the HTTP response time and the TLS-TTL for any websites with mail notification
 #######################################
-# Author on GitHub: MoBlockbuster
+# Author on GitHub: MoBlockbuster     #
 #######################################
 
-WEBSITES="https://github.com http://www.postfix.org/"
-MAILFROM=""
-MAILTO=""
-TMPFILE="/tmp/websiteinspector.log"
-TLSTTLWARN="14"
-TLSTTLCRIT="7"
-HTTPRESPTIME="3"
 WEBARRAY=("")
+WEBCNF="config_websiteinspector.cnf"
 
 # System variables. Do not change this!
 CURL=$(which curl)
 OSSL=$(which openssl)
 MAILX=$(which mailx)
 
+# Create config for me. Do not change this!
+if [ ! -f $WEBCNF ]
+then
+	echo -e "\e[1;33mI create my config\e[0m"
+	touch $WEBCNF
+fi
+
+grep -q WEBSITE $WEBCNF || echo "WEBSITES=\"https://github.com http://www.postfix.org/\"" >> $WEBCNF
+grep -q MAILFROM $WEBCNF || echo "MAILFROM=\"\"" >> $WEBCNF
+grep -q MAILTO $WEBCNF || echo "MAILTO=\"\"" >> $WEBCNF
+grep -q TLSTTLWARN $WEBCNF || echo "TLSTTLWARN=\"14\"" >> $WEBCNF
+grep -q TLSTTLCRIT $WEBCNF || echo "TLSTTLCRIT=\"7\"" >> $WEBCNF
+grep -q HTTPRESPTIME $WEBCNF || echo "HTTPRESPTIME=\"3\"" >> $WEBCNF
 
 # Show current settings
 echo -e "\e[1;31m---------------------------\e[0m"
