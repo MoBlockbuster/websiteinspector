@@ -3,6 +3,7 @@
 #######################################
 # Author on GitHub: MoBlockbuster     #
 #######################################
+# Release: 2020081501
 
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
