@@ -28,6 +28,7 @@ This tool has been programmed to monitor all of your desired websites. The webin
 - Modify the configfile config\_websiteinspector.cnf for your case. The most important variable that you should adjust is **>> WEBSITE <<**
 - Create a cronjob, that runs every 3 minutes (change this value for your case) and add at the end of the line **> /dev/null 2>&1**
 - Use parameter **-s** to show only the monitored websites
+- Use parameter **-v** to check the current version
 
 ### Support:
 If you use this tool, I would be happy to receive your feedback and your experience with webinspector

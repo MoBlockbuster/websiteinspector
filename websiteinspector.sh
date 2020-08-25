@@ -3,8 +3,8 @@
 #######################################
 # Author on GitHub: MoBlockbuster     #
 #######################################
-# Release: 2020081501
 
+VERSION="2020082501"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 
@@ -27,6 +27,13 @@ grep -q TLSTTLWARN $WEBCNF || echo "TLSTTLWARN=\"14\"" >> $WEBCNF
 grep -q TLSTTLCRIT $WEBCNF || echo "TLSTTLCRIT=\"7\"" >> $WEBCNF
 grep -q HTTPRESPTIME $WEBCNF || echo "HTTPRESPTIME=\"3\"" >> $WEBCNF
 grep -q TMPFILE $WEBCNF || echo "TMPFILE=\"/tmp/websiteinspector.log\"" >> $WEBCNF
+
+# Show version of websiteinspector
+if [ "$1" == "-v" ]
+then
+	echo -e "\e[1;33mWebsiteinspector version: \e[1;31m$VERSION\e[0m"
+	exit 0
+fi
 
 source $WEBCNF
 
