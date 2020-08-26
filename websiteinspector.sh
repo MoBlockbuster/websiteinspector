@@ -100,7 +100,7 @@ function tlsexpire()
                 echo -e "\e[1;33mTLS-Certificate expire in $d days\e[0m"
                 if [ $d -gt $TLSTTLWARN ]
 		then
-			echo -e "\e[1;33mTLS-Certifikat OK\e[0m"
+			echo -e "\e[1;33mTLS-Certificat OK\e[0m"
                         grep -q "$x TLS-Certificate" "${TMPFILE}"
                         if [ $? -eq 0 ]
                         then
@@ -109,14 +109,14 @@ function tlsexpire()
                         fi
 		elif [ $d -le $TLSTTLWARN ] && [ $d -gt $TLSTTLCRIT ]
                 then
-                        echo -e "\e[1;31mTLS-Certifikate WARNING\e[0m"
+                        echo -e "\e[1;31mTLS-Certificate WARNING\e[0m"
                         grep -q "$x TLS-Certificate-WARNING" "${TMPFILE}"
                         if [ $? -eq 0 ]
                         then
                                 return
                         fi
-                        echo -e "\e[1;31m$x TLS-Certificate-WARNING = $d Tage INFO\e[0m" >> "${TMPFILE}"
-                        echo -e "\e[1;31m$x TLS-Certificate-WARNING expire in $d days for $x\e[0m" | $MAILX -s "TLS-Certifikate WARNING $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
+                        echo -e "\e[1;31m$x TLS-Certificate-WARNING = $d days INFO\e[0m" >> "${TMPFILE}"
+                        echo -e "\e[1;31m$x TLS-Certificate-WARNING expire in $d days for $x\e[0m" | $MAILX -s "TLS-Certificate WARNING $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
                 elif [ $d -le $TLSTTLCRIT ]
                 then
                         echo -e "\e[1;31mTLS-Certificate ALARM\e[0m"
@@ -125,11 +125,11 @@ function tlsexpire()
                         then
                                 return
                         fi
-                        echo -e "\e[1;31m$x TLS-Certificate-ALARM = $d Tage ALARM\e[0m" >> "${TMPFILE}"
+                        echo -e "\e[1;31m$x TLS-Certificate-ALARM = $d days ALARM\e[0m" >> "${TMPFILE}"
                         echo -e "\e[1;31m$x TLS-Certificate-ALARM expire in $d days\e[0m" | $MAILX -s "TLS-Certifikate ALARM $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
                 elif [ $d -eq 0 ]
                 then
-                        echo -e "\e[1;31mTLS-Certifikate ZERODAY-ALARM\e[0m"
+                        echo -e "\e[1;31mTLS-Certificate ZERODAY-ALARM\e[0m"
                         grep -q "$x TLS-Certificate ZERODAY-ALARM" "${TMPFILE}"
                         if [ $? -eq 0 ]
                         then
