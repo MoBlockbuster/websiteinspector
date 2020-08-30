@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020083001"
+VERSION="2020082601"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 
@@ -28,26 +28,14 @@ grep -q TLSTTLCRIT $WEBCNF || echo "TLSTTLCRIT=\"7\"" >> $WEBCNF
 grep -q HTTPRESPTIME $WEBCNF || echo "HTTPRESPTIME=\"3\"" >> $WEBCNF
 grep -q TMPFILE $WEBCNF || echo "TMPFILE=\"/tmp/websiteinspector.log\"" >> $WEBCNF
 
+# Show version of websiteinspector
+if [ "$1" == "-v" ]
+then
+	echo -e "\e[1;33mWebsiteinspector version: \e[1;31m$VERSION\e[0m"
+	exit 0
+fi
+
 source $WEBCNF
-
-case "$1" in
-	-v)
-		# Show version of websiteinspector with parameter -v
-		echo -e "\e[1;33mWebsiteinspector version: \e[1;31m$VERSION\e[0m"
-		exit 0
-		;;
-	-s)
-		# Show all monitored websites with parameter -s
-		echo -e "\e[1;33mShow all monitored websites:\e[0m"
-		for i in $WEBSITES
-		do
-			echo -e "\e[1;33m-> \e[1;34m$i\e[0m"
-		done
-		exit 0
-		;;
-esac
-
-
 
 # Show current settings
 echo -e "\e[1;31m---------------------------\e[0m"
@@ -58,6 +46,17 @@ echo "TLSWARNING: $TLSTTLWARN"
 echo "TLSCRITICAL: $TLSTTLCRIT"
 echo "HTTP-RESP-TIME: $HTTPRESPTIME"
 echo -e "\e[1;31m---------------------------\e[0m"
+
+# Show all monitored websites with parameter -s
+if [ "$1" == "-s" ]
+then
+	echo -e "\e[1;33mShow all monitored websites:\e[0m"
+	for i in $WEBSITES
+	do
+		echo -e "\e[1;33m-> \e[1;34m$i\e[0m"
+	done
+	exit 0
+fi
 
 # Remove the last slash
 for i in $WEBSITES
