@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020082601"
+VERSION="2020082602"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 
