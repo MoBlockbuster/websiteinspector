@@ -14,7 +14,7 @@ This tool has been programmed to monitor all of your desired websites. The webin
   - Example for the variable WEBSITES: **WEBSITES="https://github.com http://www.postfix.org/ etc."**
 
 ### Information:
-- You can change in webinspector the values for TLS-WARN, TLS-CRIT and HTTP-RESPONSE-TIME
+- You can change in config\_websiteinspector.cnf the values for TLS-WARN, TLS-CRIT and HTTP-RESPONSE-TIME
 - The websiteinspector call a website and expect the 200 HTTP-CODE. Each redirect will be followed until the HTTP-CODE 200 is reached
 - If websiteinspector not found an HTTP-CODE 200, this is treated as an error
 - If the TLS-TTL (SSL certificate expire date) is lower then 14 days and higher then 7 days this will be handled as **warning**
@@ -22,8 +22,8 @@ This tool has been programmed to monitor all of your desired websites. The webin
 - If the website takes longer then 3 seconds to load this will be handled as **alarm**
 
 ### Usage:
-- Save the webinspector.sh on the server used to monitor other websites
-- Make the webinspector.sh executable
+- Save the websiteinspector.sh on the server used to monitor other websites
+- Make the websiteinspector.sh executable
 - Start the webinspector for the first time, to create his missing configfile
 - Modify the configfile config\_websiteinspector.cnf for your case. The most important variable that you should adjust is **>> WEBSITE <<**
 - Create a cronjob, that runs every 3 minutes (change this value for your case) and add at the end of the line **> /dev/null 2>&1**
