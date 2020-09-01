@@ -13,20 +13,27 @@ CURL=$(which curl)
 OSSL=$(which openssl)
 MAILX=$(which mailx)
 
+function config_file
+{
+	grep -q WEBSITE $WEBCNF || echo "WEBSITES=\"https://github.com http://www.postfix.org/\"" >> $WEBCNF
+	grep -q MAILFROM $WEBCNF || echo "MAILFROM=\"\"" >> $WEBCNF
+	grep -q MAILTO $WEBCNF || echo "MAILTO=\"\"" >> $WEBCNF
+	grep -q TLSTTLWARN $WEBCNF || echo "TLSTTLWARN=\"14\"" >> $WEBCNF
+	grep -q TLSTTLCRIT $WEBCNF || echo "TLSTTLCRIT=\"7\"" >> $WEBCNF
+	grep -q HTTPRESPTIME $WEBCNF || echo "HTTPRESPTIME=\"3\"" >> $WEBCNF
+	grep -q TMPFILE $WEBCNF || echo "TMPFILE=\"/tmp/websiteinspector.log\"" >> $WEBCNF
+}
+
 # Create config for me. Do not change this!
 if [ ! -f $WEBCNF ]
 then
-	echo -e "\e[1;33mI create my config. Please check my config: $WEBCNF\e[0m"
+	echo -e "\e[1;33mI create my config. Please check first my config: $WEBCNF\e[0m"
 	touch $WEBCNF
+	config_file
+	exit 0
 fi
 
-grep -q WEBSITE $WEBCNF || echo "WEBSITES=\"https://github.com http://www.postfix.org/\"" >> $WEBCNF
-grep -q MAILFROM $WEBCNF || echo "MAILFROM=\"\"" >> $WEBCNF
-grep -q MAILTO $WEBCNF || echo "MAILTO=\"\"" >> $WEBCNF
-grep -q TLSTTLWARN $WEBCNF || echo "TLSTTLWARN=\"14\"" >> $WEBCNF
-grep -q TLSTTLCRIT $WEBCNF || echo "TLSTTLCRIT=\"7\"" >> $WEBCNF
-grep -q HTTPRESPTIME $WEBCNF || echo "HTTPRESPTIME=\"3\"" >> $WEBCNF
-grep -q TMPFILE $WEBCNF || echo "TMPFILE=\"/tmp/websiteinspector.log\"" >> $WEBCNF
+config_file
 
 source $WEBCNF
 
