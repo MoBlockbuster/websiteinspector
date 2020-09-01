@@ -24,7 +24,7 @@ This tool has been programmed to monitor all of your desired websites. The webin
 ### Usage:
 - Save the websiteinspector.sh on the server used to monitor other websites
 - Make the websiteinspector.sh executable
-- Start the webinspector for the first time, to create his missing configfile
+- **Start the webinspector for the first time, to create his missing configfile**
 - Modify the configfile config\_websiteinspector.cnf for your case. The most important variable that you should adjust is **>> WEBSITE <<**
 - Create a cronjob, that runs every 3 minutes (change this value for your case) and add at the end of the line **> /dev/null 2>&1**
 - Use parameter **-s** to show only the monitored websites
