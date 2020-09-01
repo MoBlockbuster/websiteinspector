@@ -16,9 +16,8 @@ MAILX=$(which mailx)
 # Create config for me. Do not change this!
 if [ ! -f $WEBCNF ]
 then
-	echo -e "\e[1;33mI create my config. Please check first my config: $WEBCNF\e[0m"
+	echo -e "\e[1;33mI create my config. Please check my config: $WEBCNF\e[0m"
 	touch $WEBCNF
-	exit 0
 fi
 
 grep -q WEBSITE $WEBCNF || echo "WEBSITES=\"https://github.com http://www.postfix.org/\"" >> $WEBCNF
