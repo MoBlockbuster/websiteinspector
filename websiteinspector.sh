@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="20200901"
+VERSION="2020090301"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 
@@ -50,6 +50,12 @@ case "$1" in
 		do
 			echo -e "\e[1;33m-> \e[1;34m$i\e[0m"
 		done
+		exit 0
+		;;
+	-f)
+		# Show content of websiteinspector.log
+		echo -e "\e[1;33mShow content of $TMPFILE:\e[0m"
+		cat $TMPFILE
 		exit 0
 		;;
 esac
@@ -111,7 +117,7 @@ function tlsexpire()
                         if [ $? -eq 0 ]
                         then
                 	        sed -i "\,$x TLS-Certificate,d" "${TMPFILE}"
-                                echo -e "\e[1;31m$x TLS-Certificate expire in $d days -> OK\e[0m" | $MAILX -s "TLSCertificate for $x expire in $d days -> OK" -r ${MAILFROM} ${MAILTO}
+                                echo "$x TLS-Certificate expire in $d days -> OK" | $MAILX -s "TLSCertificate for $x expire in $d days -> OK" -r ${MAILFROM} ${MAILTO}
                         fi
 		elif [ $d -le $TLSTTLWARN ] && [ $d -gt $TLSTTLCRIT ]
                 then
@@ -122,7 +128,7 @@ function tlsexpire()
                                 return
                         fi
                         echo -e "\e[1;31m$x TLS-Certificate-WARNING = $d days INFO\e[0m" >> "${TMPFILE}"
-                        echo -e "\e[1;31m$x TLS-Certificate-WARNING expire in $d days for $x\e[0m" | $MAILX -s "TLS-Certificate WARNING $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
+                        echo "$x TLS-Certificate-WARNING expire in $d days for $x" | $MAILX -s "TLS-Certificate WARNING $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
                 elif [ $d -le $TLSTTLCRIT ]
                 then
                         echo -e "\e[1;31mTLS-Certificate ALARM\e[0m"
@@ -132,7 +138,7 @@ function tlsexpire()
                                 return
                         fi
                         echo -e "\e[1;31m$x TLS-Certificate-ALARM = $d days ALARM\e[0m" >> "${TMPFILE}"
-                        echo -e "\e[1;31m$x TLS-Certificate-ALARM expire in $d days\e[0m" | $MAILX -s "TLS-Certifikate ALARM $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
+                        echo "$x TLS-Certificate-ALARM expire in $d days" | $MAILX -s "TLS-Certifikate ALARM $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
                 elif [ $d -eq 0 ]
                 then
                         echo -e "\e[1;31mTLS-Certificate ZERODAY-ALARM\e[0m"
@@ -142,7 +148,7 @@ function tlsexpire()
                                 return
                         fi
                         echo -e "\e[1;31m$x TLS-Certificate ZERODAY-ALARM = $d Tage ZERODAY-ALARM\e[0m" >> "${TMPFILE}"
-                        echo -e "\e[1;31m$x TLS-Certificate ist expire. Lifetime = $d days\e[0m" | $MAILX -s "TLS-Certifikate ZERODAY-ALARM für $x" -r ${MAILFROM} ${MAILTO}
+                        echo "$x TLS-Certificate ist expire. Lifetime = $d days" | $MAILX -s "TLS-Certifikate ZERODAY-ALARM für $x" -r ${MAILFROM} ${MAILTO}
                 fi
 	fi
 }
@@ -171,7 +177,7 @@ do
 		if [ $? -eq 0 ]
 		then
 			sed -i "\,$i HTTP Timetotal,d" "${TMPFILE}"
-			echo -e "\e[1;31m$i HTTP Timetotal = $TIME WARNING -> OK\e[0m" | $MAILX -s "HTTP Timetotal for $i WARNING -> OK" -r ${MAILFROM} ${MAILTO}
+			echo "$i HTTP Timetotal = $TIME WARNING -> OK" | $MAILX -s "HTTP Timetotal for $i WARNING -> OK" -r ${MAILFROM} ${MAILTO}
 		fi
          elif [ "$TIME" -ge 8 ]
          then
