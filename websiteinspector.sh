@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020090301"
+VERSION="2020090401"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 
@@ -56,6 +56,12 @@ case "$1" in
 		# Show content of websiteinspector.log
 		echo -e "\e[1;33mShow content of $TMPFILE:\e[0m"
 		cat $TMPFILE
+		exit 0
+		;;
+	-r)
+		# Remove the log
+		echo -e "\e[1;33mRemove $TMPFILE\e[0m"
+		rm $TMPFILE -f
 		exit 0
 		;;
 esac
