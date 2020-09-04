@@ -30,6 +30,7 @@ This tool has been programmed to monitor all of your desired websites. The webin
 - Use parameter **-s** to show only the monitored websites
 - Use parameter **-v** to check the current version
 - Use parameter **-f** to show the current content of alarmlog websiteinspector.log
+- Use parameter **-r** to clear the websiteinspector.log and forget all alarm and warnings
 
 ### Support:
 If you use this tool, I would be happy to receive your feedback and your experience with webinspector
