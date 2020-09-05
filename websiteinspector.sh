@@ -13,6 +13,11 @@ CURL=$(which curl)
 OSSL=$(which openssl)
 MAILX=$(which mailx)
 
+# Check whether the required tools are available
+[ -z $CURL ] && echo -e "\e[1;31mTool curl not found!\e[0m" && exit 1
+[ -z $OSSL ] && echo -e "\e[1;31mTool openssl not found!\e[0m" && exit 1
+[ -z $MAILX ] && echo -e "\e[1;31mTool mailx not found!\e[0m" && exit 1
+
 function config_file
 {
 	grep -q WEBSITE $WEBCNF || echo "WEBSITES=\"https://github.com http://www.postfix.org/\"" >> $WEBCNF
