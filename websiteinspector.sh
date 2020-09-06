@@ -32,17 +32,16 @@ config_file
 
 source $WEBCNF
 
-# System variables. Do not change this!
-CURL=$(which curl)
-OSSL=$(which openssl)
-MAILX=$(which mailx)
-
-# Check whether the required tools are available
-[ -z $CURL ] && echo -e "\e[1;31mPlease install curl!\e[0m" && exit 1
-[ -z $OSSL ] && echo -e "\e[1;31mPlease install openssl!\e[0m" && exit 1
-[ -z $MAILX ] && echo -e "\e[1;31mPlease install mailx!\e[0m" && exit 1
-
 case "$1" in
+	"")
+		# For no parameter
+		;;
+	-h)
+		# Show usage
+		echo -e "\e[1;33mWebsiteinspector usage:\e[0m"
+		echo -e "\e[1;33m-h Show usage\n-v Show version\n-s Show all monitored websites\n-f Show content of websiteinspector.log\n-r Remove the websiteinspector.log\e[0m"
+		exit 0
+		;;
 	-v)
 		# Show version of websiteinspector with parameter -v
 		echo -e "\e[1;33mWebsiteinspector version: \e[1;31m$VERSION\e[0m"
@@ -69,7 +68,22 @@ case "$1" in
 		rm $TMPFILE -f
 		exit 0
 		;;
+	*)
+		# I dont get it
+		echo -e "\e[1;31mI dont get the parameter "$1"\e[0m"
+		exit 1
+		;;
 esac
+
+# System variables. Do not change this!
+CURL=$(which curl)
+OSSL=$(which openssl)
+MAILX=$(which mailx)
+
+# Check whether the required tools are available
+[ -z $CURL ] && echo -e "\e[1;31mPlease install curl!\e[0m" && exit 1
+[ -z $OSSL ] && echo -e "\e[1;31mPlease install openssl!\e[0m" && exit 1
+[ -z $MAILX ] && echo -e "\e[1;31mPlease install mailx!\e[0m" && exit 1
 
 # Show current settings
 echo -e "\e[1;31m---------------------------\e[0m"
