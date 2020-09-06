@@ -8,19 +8,9 @@ VERSION="2020090401"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 
-# System variables. Do not change this!
-CURL=$(which curl)
-OSSL=$(which openssl)
-MAILX=$(which mailx)
-
-# Check whether the required tools are available
-[ -z $CURL ] && echo -e "\e[1;31mTool curl not found!\e[0m" && exit 1
-[ -z $OSSL ] && echo -e "\e[1;31mTool openssl not found!\e[0m" && exit 1
-[ -z $MAILX ] && echo -e "\e[1;31mTool mailx not found!\e[0m" && exit 1
-
 function config_file
 {
-	grep -q WEBSITE $WEBCNF || echo "WEBSITES=\"https://github.com http://www.postfix.org/\"" >> $WEBCNF
+	grep -q WEBSITE $WEBCNF || echo "WEBSITES=\"https://github.com http://www.postfix.org\"" >> $WEBCNF
 	grep -q MAILFROM $WEBCNF || echo "MAILFROM=\"\"" >> $WEBCNF
 	grep -q MAILTO $WEBCNF || echo "MAILTO=\"\"" >> $WEBCNF
 	grep -q TLSTTLWARN $WEBCNF || echo "TLSTTLWARN=\"14\"" >> $WEBCNF
@@ -41,6 +31,16 @@ fi
 config_file
 
 source $WEBCNF
+
+# System variables. Do not change this!
+CURL=$(which curl)
+OSSL=$(which openssl)
+MAILX=$(which mailx)
+
+# Check whether the required tools are available
+[ -z $CURL ] && echo -e "\e[1;31mPlease install curl!\e[0m" && exit 1
+[ -z $OSSL ] && echo -e "\e[1;31mPlease install openssl!\e[0m" && exit 1
+[ -z $MAILX ] && echo -e "\e[1;31mPlease install mailx!\e[0m" && exit 1
 
 case "$1" in
 	-v)
