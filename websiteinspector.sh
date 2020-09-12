@@ -27,7 +27,7 @@ if [ $? -eq 0 ]
 then
 	export LANG=$ORILANG
 else
-	echo -e "\e[1;31mUpdates are available for me!\e[0m\n\e[1;5;31mStart me with parameter -u\e[0m"
+	echo -e "\e[1;5;31mUpdates are available for me!\e[0m\n\e[1;31mStart me with parameter -u\e[0m"
 	export LANG=$ORILANG
 fi
 
