@@ -19,6 +19,18 @@ function config_file
 	grep -q TMPFILE $WEBCNF || echo "TMPFILE=\"/tmp/websiteinspector.log\"" >> $WEBCNF
 }
 
+# Check for updates
+ORILANG=$(echo $LANG)
+export LANG=en_US.UTF-8
+git remote show origin | grep -q "up to date"
+if [ $? -eq 0 ]
+then
+	export LANG=$ORILANG
+else
+	echo -e "\e[1;5;31mUpdates are available for me!\e[0m\n\e[1;5;31mStart me with parameter -u\e[0m"
+	export LANG=$ORILANG
+fi
+
 # Create config for me. Do not change this!
 if [ ! -f $WEBCNF ]
 then
@@ -68,6 +80,11 @@ case "$1" in
 		rm $TMPFILE -f
 		exit 0
 		;;
+	-u)
+		# Update me
+		echo -e "\e[1;33mNow i will update me!"
+		git pull
+		exit 0
 	*)
 		# I dont get it
 		echo -e "\e[1;31mI dont get the parameter "$1"\e[0m"
