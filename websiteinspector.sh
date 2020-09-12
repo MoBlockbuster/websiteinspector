@@ -32,19 +32,6 @@ config_file
 
 source $WEBCNF
 
-# Check for updates
-ORILANG=$(echo $LANG)
-export LANG=en_US.UTF-8
-git remote show origin | grep -q "up to date"
-if [ $? -eq 0 ]
-then
-	export LANG=$ORILANG
-else
-	grep -q Updates $TMPFILE || echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" | tee -a ${TMPFILE}
-	echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m"
-	export LANG=$ORILANG
-fi
-
 case "$1" in
 	"")
 		# For no parameter
@@ -254,3 +241,17 @@ echo ""
 
 cat "${TMPFILE}"
 
+# Check for updates
+ORILANG=$(echo $LANG)
+export LANG=en_US.UTF-8
+git remote show origin | grep -q "up to date"
+if [ $? -eq 0 ]
+then
+	export LANG=$ORILANG
+else
+	echo ""
+	echo ""
+	grep -q Updates $TMPFILE || echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" | tee -a ${TMPFILE}
+	echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m"
+	export LANG=$ORILANG
+fi
