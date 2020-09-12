@@ -19,18 +19,6 @@ function config_file
 	grep -q TMPFILE $WEBCNF || echo "TMPFILE=\"/tmp/websiteinspector.log\"" >> $WEBCNF
 }
 
-# Check for updates
-ORILANG=$(echo $LANG)
-export LANG=en_US.UTF-8
-git remote show origin | grep -q "up to date"
-if [ $? -eq 0 ]
-then
-	export LANG=$ORILANG
-else
-	echo -e "\e[1;5;31mUpdates are available for me!\e[0m\n\e[1;31mStart me with parameter -u\e[0m"
-	export LANG=$ORILANG
-fi
-
 # Create config for me. Do not change this!
 if [ ! -f $WEBCNF ]
 then
@@ -43,6 +31,19 @@ fi
 config_file
 
 source $WEBCNF
+
+# Check for updates
+ORILANG=$(echo $LANG)
+export LANG=en_US.UTF-8
+git remote show origin | grep -q "up to date"
+if [ $? -eq 0 ]
+then
+	export LANG=$ORILANG
+else
+	grep -q Updates $TMPFILE || echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" | tee -a ${TMPFILE}
+	echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m"
+	export LANG=$ORILANG
+fi
 
 case "$1" in
 	"")
