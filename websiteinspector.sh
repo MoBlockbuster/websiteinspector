@@ -248,7 +248,9 @@ git remote show origin | grep -q "up to date"
 if [ $? -eq 0 ]
 then
 	export LANG=$ORILANG
-	echo -e "\e[1;31mI am up to date $VERSION"
+	echo ""
+	echo ""
+	echo -e "\e[1;32mI am up to date with version: $VERSION\e[0m"
 else
 	echo ""
 	echo ""
