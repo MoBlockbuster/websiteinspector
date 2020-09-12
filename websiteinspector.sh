@@ -27,7 +27,7 @@ if [ $? -eq 0 ]
 then
 	export LANG=$ORILANG
 else
-	echo -e "\e[1;5;31mUpdates are available for me!\e[0m\n\e[1;5;31mStart me with parameter -u\e[0m"
+	echo -e "\e[1;31mUpdates are available for me!\e[0m\n\e[1;5;31mStart me with parameter -u\e[0m"
 	export LANG=$ORILANG
 fi
 
@@ -82,9 +82,10 @@ case "$1" in
 		;;
 	-u)
 		# Update me
-		echo -e "\e[1;33mNow i will update me!"
+		echo -e "\e[1;33mNow i will update me!\e[0m"
 		git pull
 		exit 0
+		;;
 	*)
 		# I dont get it
 		echo -e "\e[1;31mI dont get the parameter "$1"\e[0m"

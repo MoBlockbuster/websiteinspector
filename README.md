@@ -32,6 +32,7 @@ This tool has been programmed to monitor all of your desired websites. The webin
 - Use parameter **-f** to show the current content of alarmlog websiteinspector.log
 - Use parameter **-r** to clear the websiteinspector.log and forget all alarm and warnings
 - Use parameter **-h** to show the usage of websiteinspector.log
+- Use parameter **-u** to update me
 
 ### Support:
 If you use this tool, I would be happy to receive your feedback and your experience with webinspector
