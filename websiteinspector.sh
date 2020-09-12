@@ -239,8 +239,6 @@ done
 
 echo ""
 
-cat "${TMPFILE}"
-
 # Check for updates
 ORILANG=$(echo $LANG)
 export LANG=en_US.UTF-8
@@ -251,10 +249,12 @@ then
 	echo ""
 	echo ""
 	echo -e "\e[1;32mI am up to date with version: $VERSION\e[0m"
+	grep -q Updates $TMPFILE && sed -i '/Updates/d' $TMPFILE
 else
 	echo ""
 	echo ""
-	grep -q Updates $TMPFILE || echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" | tee -a ${TMPFILE}
-	echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m"
+	echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" | tee -a ${TMPFILE}
 	export LANG=$ORILANG
 fi
+
+cat "${TMPFILE}"
