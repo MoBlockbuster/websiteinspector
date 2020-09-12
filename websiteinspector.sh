@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020090602"
+VERSION="2020091206"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 
@@ -248,6 +248,7 @@ git remote show origin | grep -q "up to date"
 if [ $? -eq 0 ]
 then
 	export LANG=$ORILANG
+	echo -e "\e[1;31mI am up to date $VERSION"
 else
 	echo ""
 	echo ""
