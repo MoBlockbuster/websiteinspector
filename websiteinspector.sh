@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020091210"
+VERSION="2020091301"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 
@@ -99,6 +99,7 @@ echo "MAILTO: $MAILTO"
 echo "TLSWARNING: $TLSTTLWARN"
 echo "TLSCRITICAL: $TLSTTLCRIT"
 echo "HTTP-RESP-TIME: $HTTPRESPTIME"
+echo "TMPFILE: $TMPFILE"
 echo -e "\e[1;31m---------------------------\e[0m"
 
 # Remove the last slash
