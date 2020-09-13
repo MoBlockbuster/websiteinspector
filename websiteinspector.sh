@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020091301"
+VERSION="2020091302"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 
@@ -238,8 +238,6 @@ do
 
 done
 
-echo ""
-
 # Check for updates
 ORILANG=$(echo $LANG)
 export LANG=en_US.UTF-8
@@ -248,13 +246,12 @@ if [ $? -eq 0 ]
 then
 	export LANG=$ORILANG
 	echo ""
-	echo ""
 	echo -e "\e[1;32mI am up to date with version: $VERSION\e[0m"
-	grep -q Updates $TMPFILE && sed -i '/Updates/d' $TMPFILE
+	echo ""
+	grep -q "Updates" $TMPFILE && sed -i '/Updates/d' $TMPFILE
 else
 	echo ""
-	echo ""
-	echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" | tee -a ${TMPFILE}
+	grep -q "Updates" $TMPFILE || echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" >> ${TMPFILE}
 	export LANG=$ORILANG
 fi
 
