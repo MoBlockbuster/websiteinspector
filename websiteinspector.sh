@@ -248,10 +248,18 @@ then
 	echo ""
 	echo -e "\e[1;32mI am up to date with version: $VERSION\e[0m"
 	echo ""
-	grep -q "Updates" $TMPFILE && sed -i '/Updates/d' $TMPFILE
+	grep -q "Updates" $TMPFILE 
+	if [ $? -eq 0 ]
+	then
+		sed -i '/Updates/d' $TMPFILE
+		echo "Now i am up to date with version $VERSION" | $MAILX -s "websiteinspector is now up to date" -r ${MAILFROM} ${MAILTO}
 else
 	echo ""
-	grep -q "Updates" $TMPFILE || echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" >> ${TMPFILE}
+	grep -q "Updates" $TMPFILE 
+	if [ $? -ne 0 ]
+	then
+		echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" >> ${TMPFILE}
+		echo -e "I detected updates for me.\Please update websiteinspector with parameter -u" | $MAILX -s "websiteinspector needs update" -r ${MAILFROM} ${MAILTO}
 	export LANG=$ORILANG
 fi
 
