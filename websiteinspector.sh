@@ -253,6 +253,7 @@ then
 	then
 		sed -i '/Updates/d' $TMPFILE
 		echo "Now i am up to date with version $VERSION" | $MAILX -s "websiteinspector is now up to date" -r ${MAILFROM} ${MAILTO}
+	fi
 else
 	echo ""
 	grep -q "Updates" $TMPFILE 
@@ -260,6 +261,7 @@ else
 	then
 		echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" >> ${TMPFILE}
 		echo -e "I detected updates for me.\Please update websiteinspector with parameter -u" | $MAILX -s "websiteinspector needs update" -r ${MAILFROM} ${MAILTO}
+	fi
 	export LANG=$ORILANG
 fi
 
