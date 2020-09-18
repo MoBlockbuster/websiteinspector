@@ -260,7 +260,7 @@ else
 	if [ $? -ne 0 ]
 	then
 		echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" >> ${TMPFILE}
-		echo -e "I detected updates for me.\Please update websiteinspector with parameter -u" | $MAILX -s "websiteinspector needs update" -r ${MAILFROM} ${MAILTO}
+		echo -e "I detected updates for me.\nPlease update websiteinspector with parameter -u" | $MAILX -s "websiteinspector needs update" -r ${MAILFROM} ${MAILTO}
 	fi
 	export LANG=$ORILANG
 fi
