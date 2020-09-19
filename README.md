@@ -35,7 +35,7 @@ This tool has been programmed to monitor all of your desired websites. The webin
 - Use parameter **-u** to update me
 
 ### Support:
-If you use this tool, I would be happy to receive your feedback and your experience with webinspector
+If you use this tool, I would be happy to receive your feedback and your experience with websiteinspector
 
 **Cheers**
 
