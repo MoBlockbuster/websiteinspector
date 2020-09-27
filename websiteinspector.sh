@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020093001"
+VERSION="2020092701"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 
@@ -39,7 +39,7 @@ case "$1" in
 	-h)
 		# Show usage
 		echo -e "\e[1;33mWebsiteinspector usage:\e[0m"
-		echo -e "\e[1;33m-h Show usage\n-v Show version\n-s Show all monitored websites\n-f Show content of websiteinspector.log\n-r Remove the websiteinspector.log\e\n -u Update me from git\e[0m"
+		echo -e "\e[1;33m-h Show usage\n-v Show version\n-s Show all monitored websites\n-f Show content of websiteinspector.log\n-r Remove the websiteinspector.log\n-u Update me from git\e[0m"
 		exit 0
 		;;
 	-v)
