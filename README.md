@@ -11,7 +11,7 @@ This tool has been programmed to monitor all of your desired websites. The webin
 - Create a cronjob
 - Define the variable **MAILFROM** and **MAILTO** in websiteinspector
 - Enter the desired URL in the variable **WEBSITES**. 
-  - Example for the variable WEBSITES: **WEBSITES="https://github.com http://www.postfix.org/ etc."**
+  - Example for the variable WEBSITES: **WEBSITES="https://github.com http://www.postfix.org"**
 
 ### Information:
 - You can change in config\_websiteinspector.cnf the values for TLS-WARN, TLS-CRIT and HTTP-RESPONSE-TIME
