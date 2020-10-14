@@ -7,6 +7,7 @@
 VERSION="2020092701"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
+DATE=$(date +%Y-%m-%d)
 
 function config_file
 {
@@ -159,7 +160,7 @@ function tlsexpire()
                         then
                                 return
                         fi
-                        echo -e "\e[1;31m$x TLS-Certificate-WARNING = $d days INFO\e[0m" >> "${TMPFILE}"
+                        echo -e "\e[1;31m$x TLS-Certificate-WARNING = $d days INFO. Date: $DATE\e[0m" >> "${TMPFILE}"
                         echo "$x TLS-Certificate-WARNING expire in $d days for $x" | $MAILX -s "TLS-Certificate WARNING $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
                 elif [ $d -le $TLSTTLCRIT ]
                 then
@@ -169,7 +170,7 @@ function tlsexpire()
                         then
                                 return
                         fi
-                        echo -e "\e[1;31m$x TLS-Certificate-ALARM = $d days ALARM\e[0m" >> "${TMPFILE}"
+                        echo -e "\e[1;31m$x TLS-Certificate-ALARM = $d days ALARM. Date: $DATE\e[0m" >> "${TMPFILE}"
                         echo "$x TLS-Certificate-ALARM expire in $d days" | $MAILX -s "TLS-Certifikate ALARM $x. Valid for $d days" -r ${MAILFROM} ${MAILTO}
                 elif [ $d -eq 0 ]
                 then
@@ -179,7 +180,7 @@ function tlsexpire()
                         then
                                 return
                         fi
-                        echo -e "\e[1;31m$x TLS-Certificate ZERODAY-ALARM = $d Tage ZERODAY-ALARM\e[0m" >> "${TMPFILE}"
+                        echo -e "\e[1;31m$x TLS-Certificate ZERODAY-ALARM = $d Tage ZERODAY-ALARM. Date: $DATE\e[0m" >> "${TMPFILE}"
                         echo "$x TLS-Certificate ist expire. Lifetime = $d days" | $MAILX -s "TLS-Certifikate ZERODAY-ALARM für $x" -r ${MAILFROM} ${MAILTO}
                 fi
 	fi
@@ -220,7 +221,7 @@ do
 			continue
 		fi
 		echo -e "\e[1;31mHTTP Timetotal = $TIME WARNING\e[0m"
-                echo "$i HTTP Timetotal = $TIME WARNING" >> "${TMPFILE}"	
+                echo "$i HTTP Timetotal = $TIME WARNING. Date $DATE" >> "${TMPFILE}"	
                 echo "$i HTTP Timetotal = $TIME WARNING" | $MAILX -s "HTTP TIME $i = $TIME WARNING" -r ${MAILFROM} ${MAILTO}
                 
 	else
@@ -233,7 +234,7 @@ do
 			continue
 		fi
 		echo "$i HTTP Statuscode = $CODE OK -> ERROR" | $MAILX -s "HTTP Statuscode for $i OK -> ERROR" -r ${MAILFROM} ${MAILTO}
-		echo "$i HTTP Statuscode = $CODE ERROR" >> "${TMPFILE}"
+		echo "$i HTTP Statuscode = $CODE ERROR. Date: $DATE" >> "${TMPFILE}"
 	fi
 
 done
@@ -259,7 +260,7 @@ else
 	grep -q "Updates" $TMPFILE 
 	if [ $? -ne 0 ]
 	then
-		echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u\e[0m" >> ${TMPFILE}
+		echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u. Date: $DATE\e[0m" >> ${TMPFILE}
 		echo -e "I detected updates for me.\nPlease update websiteinspector with parameter -u" | $MAILX -s "websiteinspector needs update" -r ${MAILFROM} ${MAILTO}
 	fi
 	export LANG=$ORILANG
