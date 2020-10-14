@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020092701"
+VERSION="2020101401"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
