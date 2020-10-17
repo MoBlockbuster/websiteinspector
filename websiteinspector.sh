@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020101401"
+VERSION="2020101801"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -219,7 +219,6 @@ do
 		echo -e "\e[1;31mHTTP Timetotal = $TIME WARNING\e[0m"
                 echo "$i HTTP Timetotal = $TIME WARNING. Date $DATE" >> "${TMPFILE}"
                 echo "$i HTTP Timetotal = $TIME WARNING" | $MAILX -s "HTTP TIME $i = $TIME WARNING" -r ${MAILFROM} ${MAILTO}
-
 	else
 		echo ""
 		echo "---URL: $i"
@@ -232,7 +231,6 @@ do
 		echo "$i HTTP Statuscode = $CODE OK -> ERROR" | $MAILX -s "HTTP Statuscode for $i OK -> ERROR" -r ${MAILFROM} ${MAILTO}
 		echo "$i HTTP Statuscode = $CODE ERROR. Date: $DATE" >> "${TMPFILE}"
 	fi
-
 done
 
 # Check for updates
