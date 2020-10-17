@@ -109,14 +109,10 @@ do
 	DIRTYURL=$(echo "${i: -1}")
 	if [ $DIRTYURL = "/" ]
 	then
-		#echo "Slash >/< detected"
 		CLEANURL=${i::-1}
 		WEBARRAY+=("$CLEANURL")
-		#echo -e "New URL: \e[1;33m$CLEANURL\e[0m"
 	else
-		#echo "No slash >/< found"
 		WEBARRAY+=("$i")
-		#echo -e "URL is OK: \e[1;33m$i\e[0m"
 	fi
 done
 
@@ -192,7 +188,7 @@ do
 	if [ "$CODE" -eq 200  ]
 	then
 		echo ""
-		echo -e "\e[1;34m+++URL: $i\e[0m" 
+		echo -e "\e[1;34m+++URL: $i\e[0m"
 		echo -e "\e[1;33mHTTP Statuscode = $CODE OK\e[0m"
 		grep -q "$i HTTP Statuscode" "${TMPFILE}"
 		if [ $? -eq 0 ]
@@ -221,9 +217,9 @@ do
 			continue
 		fi
 		echo -e "\e[1;31mHTTP Timetotal = $TIME WARNING\e[0m"
-                echo "$i HTTP Timetotal = $TIME WARNING. Date $DATE" >> "${TMPFILE}"	
+                echo "$i HTTP Timetotal = $TIME WARNING. Date $DATE" >> "${TMPFILE}"
                 echo "$i HTTP Timetotal = $TIME WARNING" | $MAILX -s "HTTP TIME $i = $TIME WARNING" -r ${MAILFROM} ${MAILTO}
-                
+
 	else
 		echo ""
 		echo "---URL: $i"
@@ -249,7 +245,7 @@ then
 	echo ""
 	echo -e "\e[1;32mI am up to date with version: $VERSION\e[0m"
 	echo ""
-	grep -q "Updates" $TMPFILE 
+	grep -q "Updates" $TMPFILE
 	if [ $? -eq 0 ]
 	then
 		sed -i '/Updates/d' $TMPFILE
@@ -257,7 +253,7 @@ then
 	fi
 else
 	echo ""
-	grep -q "Updates" $TMPFILE 
+	grep -q "Updates" $TMPFILE
 	if [ $? -ne 0 ]
 	then
 		echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u. Date: $DATE\e[0m" >> ${TMPFILE}
