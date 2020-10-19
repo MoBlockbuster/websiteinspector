@@ -86,11 +86,13 @@ esac
 CURL=$(which curl)
 OSSL=$(which openssl)
 MAILX=$(which mailx)
+HOST=$(which host)
 
 # Check whether the required tools are available
 [ -z $CURL ] && echo -e "\e[1;31mPlease install curl!\e[0m" && exit 1
 [ -z $OSSL ] && echo -e "\e[1;31mPlease install openssl!\e[0m" && exit 1
 [ -z $MAILX ] && echo -e "\e[1;31mPlease install mailx!\e[0m" && exit 1
+[ -z $HOST ] && echo -e "\e[1;31mPlease install host!\e[0m" && exit 1
 
 # Show current settings
 echo -e "\e[1;31m---------------------------\e[0m"
@@ -102,6 +104,13 @@ echo "TLSCRITICAL: $TLSTTLCRIT"
 echo "HTTP-RESP-TIME: $HTTPRESPTIME"
 echo "TMPFILE: $TMPFILE"
 echo -e "\e[1;31m---------------------------\e[0m"
+
+# Validate domain
+function validate_domain()
+{
+                DOM=$(echo $i | awk -F "//" '{ print $2 }')
+                host "$DOM" 2>&1 > /dev/null || { echo ""; echo -e "\e[1;31mDomain $DOM not found!\e[0m"; continue ;}
+}
 
 # Remove the last slash
 for i in $WEBSITES
@@ -184,6 +193,7 @@ function tlsexpire()
 
 for i in $WEBSITES
 do
+	validate_domain
 	CODE=$($CURL -L --user-agent "websiteinspector" --write-out "%{http_code}\n" --silent --output /dev/null $i)
 	if [ "$CODE" -eq 200  ]
 	then
