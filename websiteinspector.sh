@@ -86,7 +86,6 @@ esac
 CURL=$(which curl)
 OSSL=$(which openssl)
 MAILX=$(which mailx)
-WHOIS=$(which whois)
 
 # Check whether the required tools are available
 [ -z $CURL ] && echo -e "\e[1;31mPlease install curl!\e[0m" && exit 1
