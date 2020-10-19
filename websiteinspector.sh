@@ -195,7 +195,7 @@ for i in $WEBSITES
 do
 	validate_domain
 	CODE=$($CURL -L --user-agent "websiteinspector" --write-out "%{http_code}\n" --silent --output /dev/null $i)
-	if [ "$CODE" -eq 200  ]
+	if [ "$CODE" -eq 200 ]
 	then
 		echo ""
 		echo -e "\e[1;34m+++URL: $i\e[0m"
