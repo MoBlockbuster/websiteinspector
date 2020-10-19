@@ -109,7 +109,7 @@ echo -e "\e[1;31m---------------------------\e[0m"
 function validate_domain()
 {
                 DOM=$(echo $i | awk -F "//" '{ print $2 }')
-                host "$DOM" 2>&1 > /dev/null || { echo ""; echo -e "\e[1;31mDomain $DOM not found!\e[0m"; continue ;}
+                host "$DOM" 2>&1 > /dev/null || { echo ""; echo -e "\e[1;5;31mDomain $DOM not found!\e[0m"; continue ;}
 }
 
 # Remove the last slash
