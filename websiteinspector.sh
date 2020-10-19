@@ -91,6 +91,7 @@ MAILX=$(which mailx)
 [ -z $CURL ] && echo -e "\e[1;31mPlease install curl!\e[0m" && exit 1
 [ -z $OSSL ] && echo -e "\e[1;31mPlease install openssl!\e[0m" && exit 1
 [ -z $MAILX ] && echo -e "\e[1;31mPlease install mailx!\e[0m" && exit 1
+[ -z $WHOIS ] && echo -e "\e[1;31mPlease install whois!\e[0m" && exit 1
 
 # Show current settings
 echo -e "\e[1;31m---------------------------\e[0m"
@@ -102,6 +103,12 @@ echo "TLSCRITICAL: $TLSTTLCRIT"
 echo "HTTP-RESP-TIME: $HTTPRESPTIME"
 echo "TMPFILE: $TMPFILE"
 echo -e "\e[1;31m---------------------------\e[0m"
+
+# Validate domain
+function validate_domain()
+{
+	$WHOIS $i | grep -q match || echo "Domain not found!"; return
+}
 
 # Remove the last slash
 for i in $WEBSITES
@@ -184,6 +191,7 @@ function tlsexpire()
 
 for i in $WEBSITES
 do
+	validate_domain
 	CODE=$($CURL -L --user-agent "websiteinspector" --write-out "%{http_code}\n" --silent --output /dev/null $i)
 	if [ "$CODE" -eq 200  ]
 	then
