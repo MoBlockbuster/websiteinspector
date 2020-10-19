@@ -7,7 +7,7 @@ This tool has been programmed to monitor all of your desired websites. The webin
 - SSH access
 - Bash as a shell
 - A working mailserver
-- Tools: mailx to send mails, curl and openssl
+- Tools: mailx to send mails, curl, host and openssl
 - Create a cronjob
 - Define the variable **MAILFROM** and **MAILTO** in websiteinspector
 - Enter the desired URL in the variable **WEBSITES**. 
