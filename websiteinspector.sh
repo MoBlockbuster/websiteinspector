@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020101903"
+VERSION="2020120801"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -246,7 +246,7 @@ done
 # Check for updates
 ORILANG=$(echo $LANG)
 export LANG=en_US.UTF-8
-git remote show origin | grep -q "up to date"
+cd `dirname $0` && git remote show origin | grep -q "up to date"
 if [ $? -eq 0 ]
 then
 	export LANG=$ORILANG
