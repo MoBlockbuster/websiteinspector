@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020120801"
+VERSION="2020121301"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -207,6 +207,11 @@ do
 			echo "$i HTTP Statuscode = $CODE ERROR -> OK" | $MAILX -s "HTTP Statuscode for $i ERROR -> OK" -r ${MAILFROM} ${MAILTO}
 	        fi
 		tlsexpire
+	else
+		echo ""
+		echo -e "\e[1;34m+++URL: $i\e[0m"
+		echo -e "\e[1;31;5mHTTP Statuscode = $CODE NOK\e[0m"
+		continue
 	fi
 	TIME=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null | awk -F \, '{print $1}')
         if [ "$TIME" -lt "$HTTPRESPTIME" ]
