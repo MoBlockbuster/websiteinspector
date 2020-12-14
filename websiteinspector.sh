@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020121301"
+VERSION="2020121401"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -209,7 +209,7 @@ do
 		tlsexpire
 	else
 		echo ""
-		echo -e "\e[1;34m+++URL: $i\e[0m"
+		echo -e "\e[1;34m---URL: $i\e[0m"
 		echo -e "\e[1;31;5mHTTP Statuscode = $CODE NOK\e[0m"
 		continue
 	fi
