@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020121401"
+VERSION="2020122001"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -194,7 +194,7 @@ function tlsexpire()
 for i in $WEBSITES
 do
 	validate_domain
-	CODE=$($CURL -L --user-agent "websiteinspector" --write-out "%{http_code}\n" --silent --output /dev/null $i)
+	CODE=$($CURL -L --user-agent "websiteinspector" --write-out "%{http_code}\n" --silent --output /dev/null --max-time 5 $i)
 	if [ "$CODE" -eq 200 ]
 	then
 		echo ""
@@ -213,7 +213,7 @@ do
 		echo -e "\e[1;31;5mHTTP Statuscode = $CODE NOK\e[0m"
 		continue
 	fi
-	TIME=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null | awk -F \, '{print $1}')
+	TIME=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null --max-time 5 | awk -F \, '{print $1}')
         if [ "$TIME" -lt "$HTTPRESPTIME" ]
         then
 		echo -e "\e[1;33mHTTP Timetotal = $TIME OK\e[0m"
