@@ -18,6 +18,7 @@ function config_file
 	grep -q TLSTTLCRIT $WEBCNF || echo "TLSTTLCRIT=\"7\"" >> $WEBCNF
 	grep -q HTTPRESPTIME $WEBCNF || echo "HTTPRESPTIME=\"3\"" >> $WEBCNF
 	grep -q TMPFILE $WEBCNF || echo "TMPFILE=\"/tmp/websiteinspector.log\"" >> $WEBCNF
+	grep -q CURLTIMEOUT $WEBCNF || echo "CURLTIMEOUT=\"8\"" >> $WEBCNF
 }
 
 # Create config for me. Do not change this!
@@ -103,6 +104,7 @@ echo "TLSWARNING: $TLSTTLWARN"
 echo "TLSCRITICAL: $TLSTTLCRIT"
 echo "HTTP-RESP-TIME: $HTTPRESPTIME"
 echo "TMPFILE: $TMPFILE"
+echo "CURLTIMEOUT: $CURLTIMEOUT"
 echo -e "\e[1;31m---------------------------\e[0m"
 
 # Validate domain
@@ -194,7 +196,7 @@ function tlsexpire()
 for i in $WEBSITES
 do
 	validate_domain
-	CODE=$($CURL -L --user-agent "websiteinspector" --write-out "%{http_code}\n" --silent --output /dev/null --max-time 5 $i)
+	CODE=$($CURL -L --user-agent "websiteinspector" --write-out "%{http_code}\n" --silent --output /dev/null --max-time $CURLTIMEOUT $i)
 	if [ "$CODE" -eq 200 ]
 	then
 		echo ""
@@ -213,7 +215,7 @@ do
 		echo -e "\e[1;31;5mHTTP Statuscode = $CODE NOK\e[0m"
 		continue
 	fi
-	TIME=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null --max-time 5 | awk -F \, '{print $1}')
+	TIME=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null --max-time $CURLTIMEOUT | awk -F \, '{print $1}')
         if [ "$TIME" -lt "$HTTPRESPTIME" ]
         then
 		echo -e "\e[1;33mHTTP Timetotal = $TIME OK\e[0m"
