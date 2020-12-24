@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020122001"
+VERSION="2020122401"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -34,6 +34,21 @@ config_file
 
 source $WEBCNF
 
+function current_settings()
+{
+	# Show my current settings
+	echo -e "\e[1;31m---------------------------\e[0m"
+	echo -e "\e[1;33mMy current settings:\e[0m"
+	echo "MAILFROM: $MAILFROM"
+	echo "MAILTO: $MAILTO"
+	echo "TLSWARNING: $TLSTTLWARN"
+	echo "TLSCRITICAL: $TLSTTLCRIT"
+	echo "HTTP-RESP-TIME: $HTTPRESPTIME"
+	echo "TMPFILE: $TMPFILE"
+	echo "CURLTIMEOUT: $CURLTIMEOUT"
+	echo -e "\e[1;31m---------------------------\e[0m"
+}
+
 case "$1" in
 	"")
 		# For no parameter
@@ -41,7 +56,7 @@ case "$1" in
 	-h)
 		# Show usage
 		echo -e "\e[1;33mWebsiteinspector usage:\e[0m"
-		echo -e "\e[1;33m-h Show usage\n-v Show version\n-s Show all monitored websites\n-f Show content of websiteinspector.log\n-r Remove the websiteinspector.log\n-u Update me from git\e[0m"
+		echo -e "\e[1;33m-h Show usage\n-v Show version\n-s Show all monitored websites\n-f Show content of websiteinspector.log\n-r Remove the websiteinspector.log\n-u Update me from git\n-x Show my current settings\e[0m"
 		exit 0
 		;;
 	-v)
@@ -76,6 +91,11 @@ case "$1" in
 		git pull
 		exit 0
 		;;
+	-x)
+		# Show my current settings
+		current_settings
+		exit 0
+		;;
 	*)
 		# I dont get it
 		echo -e "\e[1;31mI dont get the parameter "$1"\e[0m"
@@ -95,17 +115,8 @@ HOST=$(which host)
 [ -z $MAILX ] && echo -e "\e[1;31mPlease install mailx!\e[0m" && exit 1
 [ -z $HOST ] && echo -e "\e[1;31mPlease install host!\e[0m" && exit 1
 
-# Show current settings
-echo -e "\e[1;31m---------------------------\e[0m"
-echo -e "\e[1;33mMy current settings:\e[0m"
-echo "MAILFROM: $MAILFROM"
-echo "MAILTO: $MAILTO"
-echo "TLSWARNING: $TLSTTLWARN"
-echo "TLSCRITICAL: $TLSTTLCRIT"
-echo "HTTP-RESP-TIME: $HTTPRESPTIME"
-echo "TMPFILE: $TMPFILE"
-echo "CURLTIMEOUT: $CURLTIMEOUT"
-echo -e "\e[1;31m---------------------------\e[0m"
+# Show my current settings
+current_settings
 
 # Validate domain
 function validate_domain()
