@@ -4,10 +4,13 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2020122401"
+VERSION="2021011001"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
+
+# Change dir for cron
+cd "$(dirname "$0")"
 
 function config_file
 {
