@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2021011001"
+VERSION="2021011801"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -220,7 +220,7 @@ do
 		if [ $? -eq 0 ]
 		then
 			sed -i "\,$i HTTP Statuscode,d" "${TMPFILE}"
-			echo "$i HTTP Statuscode = $CODE ERROR -> OK" | $MAILX -s "HTTP Statuscode for $i ERROR -> OK" -r ${MAILFROM} ${MAILTO}
+			echo "$i HTTP Statuscode = $CODE ERROR -> OK" | $MAILX -s "HTTP Statuscode $CODE for $i ERROR -> OK" -r ${MAILFROM} ${MAILTO}
 	        fi
 		tlsexpire
 	else
@@ -259,7 +259,7 @@ do
 		then
 			continue
 		fi
-		echo "$i HTTP Statuscode = $CODE OK -> ERROR" | $MAILX -s "HTTP Statuscode for $i OK -> ERROR" -r ${MAILFROM} ${MAILTO}
+		echo "$i HTTP Statuscode = $CODE OK -> ERROR" | $MAILX -s "HTTP Statuscode $CODE for $i OK -> ERROR" -r ${MAILFROM} ${MAILTO}
 		echo "$i HTTP Statuscode = $CODE ERROR. Date: $DATE" >> "${TMPFILE}"
 	fi
 done
