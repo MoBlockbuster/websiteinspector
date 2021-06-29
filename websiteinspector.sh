@@ -4,7 +4,7 @@
 # Author on GitHub: MoBlockbuster     #
 #######################################
 
-VERSION="2021011801"
+VERSION="2021062901"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -99,6 +99,12 @@ case "$1" in
 		current_settings
 		exit 0
 		;;
+  -m)
+    # Set the md5sum hash from your site in hasher_websiteinspector.cfg
+    HASHER=$(curl -s $2 | md5sum)
+    echo $2="$HASHER" | tee -a $(pwd)/hasher_websiteinspector.cfg 
+    exit 0
+    ;;
 	*)
 		# I dont get it
 		echo -e "\e[1;31mI dont get the parameter "$1"\e[0m"
@@ -221,7 +227,7 @@ do
 		then
 			sed -i "\,$i HTTP Statuscode,d" "${TMPFILE}"
 			echo "$i HTTP Statuscode = $CODE ERROR -> OK" | $MAILX -s "HTTP Statuscode $CODE for $i ERROR -> OK" -r ${MAILFROM} ${MAILTO}
-	        fi
+	  fi
 		tlsexpire
 	else
 		echo ""
@@ -230,8 +236,8 @@ do
 		continue
 	fi
 	TIME=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null --max-time $CURLTIMEOUT | awk -F \, '{print $1}')
-        if [ "$TIME" -lt "$HTTPRESPTIME" ]
-        then
+  if [ "$TIME" -lt "$HTTPRESPTIME" ]
+  then
 		echo -e "\e[1;33mHTTP Timetotal = $TIME OK\e[0m"
 		grep -q "$i HTTP Timetotal" "${TMPFILE}"
 		if [ $? -eq 0 ]
@@ -239,25 +245,25 @@ do
 			sed -i "\,$i HTTP Timetotal,d" "${TMPFILE}"
 			echo "$i HTTP Timetotal = $TIME WARNING -> OK" | $MAILX -s "HTTP Timetotal for $i WARNING -> OK" -r ${MAILFROM} ${MAILTO}
 		fi
-         elif [ "$TIME" -ge 8 ]
-         then
-		grep -q "$i HTTP Timetotal" "${TMPFILE}"
-		if [ $? -eq 0 ]
-		then
-			echo "$i HTTP Timetotal = $TIME WARNING (is on the list)"
-			continue
-		fi
-		echo -e "\e[1;31mHTTP Timetotal = $TIME WARNING\e[0m"
-                echo "$i HTTP Timetotal = $TIME WARNING. Date $DATE" >> "${TMPFILE}"
-                echo "$i HTTP Timetotal = $TIME WARNING" | $MAILX -s "HTTP TIME $i = $TIME WARNING" -r ${MAILFROM} ${MAILTO}
+    elif [ "$TIME" -ge 8 ]
+    then
+		  grep -q "$i HTTP Timetotal" "${TMPFILE}"
+		  if [ $? -eq 0 ]
+		  then
+			  echo "$i HTTP Timetotal = $TIME WARNING (is on the list)"
+			  continue
+		  fi
+		  echo -e "\e[1;31mHTTP Timetotal = $TIME WARNING\e[0m"
+      echo "$i HTTP Timetotal = $TIME WARNING. Date $DATE" >> "${TMPFILE}"
+      echo "$i HTTP Timetotal = $TIME WARNING" | $MAILX -s "HTTP TIME $i = $TIME WARNING" -r ${MAILFROM} ${MAILTO}
 	else
-		echo ""
+	  echo ""
 		echo "---URL: $i"
-	        echo "HTTP Statuscode = $CODE ERROR"
+	  echo "HTTP Statuscode = $CODE ERROR"
 		grep -q "$i HTTP Statuscode" "${TMPFILE}"
 		if [ $? -eq 0 ]
 		then
-			continue
+		  continue
 		fi
 		echo "$i HTTP Statuscode = $CODE OK -> ERROR" | $MAILX -s "HTTP Statuscode $CODE for $i OK -> ERROR" -r ${MAILFROM} ${MAILTO}
 		echo "$i HTTP Statuscode = $CODE ERROR. Date: $DATE" >> "${TMPFILE}"
