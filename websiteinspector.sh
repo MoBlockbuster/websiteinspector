@@ -2,9 +2,10 @@
 # Skript to monitor the HTTP-CODE, the HTTP response time and the TLS-TTL for any websites with mail notification
 #######################################
 # Author on GitHub: MoBlockbuster     #
+# Contact: mmarzouki@protonmail.com   #
 #######################################
 
-VERSION="2021062901"
+VERSION="2021081601"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
