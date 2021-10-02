@@ -244,28 +244,30 @@ do
     echo "$i HTTP Statuscode = $CODE ERROR. Date: $DATE" >> "${TMPFILE}"
     continue
   fi
-  TIME=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null --max-time $CURLTIMEOUT | awk -F \, '{print $1}')
-  TIME=$(echo $TIME | awk -F "." '{ print 1 }') # Because bash can't work with float numbers
+  TIMERAW=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null --max-time $CURLTIMEOUT)
+  TIME=$(echo $TIMERAW | awk -F "." '{ print 1 }')      # Output from %{time_total} is a float - bash can't work with float numbers
+  TIME2=$(echo $TIMERAW | awk -F "." '{ print 2 }')     # Output from %{time_total} is a float - bash can't work with float numbers
+  TIMEFINAL=$TIME.$TIME2                                # Output from %{time_total} is a float - bash can't work with float numbers
   if [ "$TIME" -lt "$HTTPRESPTIME" ]
   then
-    echo -e "\e[1;33mHTTP Timetotal = $TIME OK\e[0m"
+    echo -e "\e[1;33mHTTP Timetotal = $TIMEFINAL OK\e[0m"
     grep -q "$i HTTP Timetotal" "${TMPFILE}"
     if [ $? -eq 0 ]
     then
       sed -i "\,$i HTTP Timetotal,d" "${TMPFILE}"
-      echo "$i HTTP Timetotal = $TIME WARNING -> OK" | $MAILX -s "HTTP Timetotal for $i WARNING -> OK" -r ${MAILFROM} ${MAILTO}
+      echo "$i HTTP Timetotal = $TIMEFINAL WARNING -> OK" | $MAILX -s "HTTP Timetotal for $i WARNING -> OK" -r ${MAILFROM} ${MAILTO}
     fi
     elif [ "$TIME" -ge "$HTTPRESPTIME" ]
     then
       grep -q "$i HTTP Timetotal" "${TMPFILE}"
       if [ $? -eq 0 ]
       then
-        echo "$i HTTP Timetotal = $TIME WARNING (is already on the list)"
+        echo "$i HTTP Timetotal = $TIMEFINAL WARNING (is already on the list)"
         continue
       fi
-      echo -e "\e[1;31mHTTP Timetotal = $TIME WARNING\e[0m"
-      echo "$i HTTP Timetotal = $TIME WARNING. Date $DATE" >> "${TMPFILE}"
-      echo "$i HTTP Timetotal = $TIME WARNING" | $MAILX -s "HTTP TIME $i = $TIME WARNING" -r ${MAILFROM} ${MAILTO}
+      echo -e "\e[1;31mHTTP Timetotal = $TIMEFINAL WARNING\e[0m"
+      echo "$i HTTP Timetotal = $TIMEFINAL WARNING. Date $DATE" >> "${TMPFILE}"
+      echo "$i HTTP Timetotal = $TIMEFINAL WARNING" | $MAILX -s "HTTP TIME $i = $TIMEFINAL WARNING" -r ${MAILFROM} ${MAILTO}
   fi
 done
 
