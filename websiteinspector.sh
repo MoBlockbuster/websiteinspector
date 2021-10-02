@@ -246,7 +246,7 @@ do
       sed -i "\,$i HTTP Timetotal,d" "${TMPFILE}"
       echo "$i HTTP Timetotal = $TIME WARNING -> OK" | $MAILX -s "HTTP Timetotal for $i WARNING -> OK" -r ${MAILFROM} ${MAILTO}
     fi
-    elif [ "$TIME" -ge 8 ]
+    elif [ "$TIME" -ge "$HTTPRESPTIME" ]
     then
       grep -q "$i HTTP Timetotal" "${TMPFILE}"
       if [ $? -eq 0 ]
