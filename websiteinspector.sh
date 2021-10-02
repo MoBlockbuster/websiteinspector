@@ -5,7 +5,7 @@
 # Contact: mmarzouki@protonmail.com   #
 #######################################
 
-VERSION="2021100202"
+VERSION="2021100203"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -245,8 +245,8 @@ do
     continue
   fi
   TIMERAW=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null --max-time $CURLTIMEOUT)
-  TIME=$(echo $TIMERAW | awk -F "." '{ print 1 }')      # Output from %{time_total} is a float - bash can't work with float numbers
-  TIME2=$(echo $TIMERAW | awk -F "." '{ print 2 }')     # Output from %{time_total} is a float - bash can't work with float numbers
+  TIME=$(echo $TIMERAW | awk -F "," '{ print $1 }')      # Output from %{time_total} is a float - bash can't work with float numbers
+  TIME2=$(echo $TIMERAW | awk -F "," '{ print $2 }')     # Output from %{time_total} is a float - bash can't work with float numbers
   TIMEFINAL=$TIME.$TIME2                                # Output from %{time_total} is a float - bash can't work with float numbers
   if [ "$TIME" -lt "$HTTPRESPTIME" ]
   then
