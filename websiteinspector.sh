@@ -5,7 +5,7 @@
 # Contact: mmarzouki@protonmail.com   #
 #######################################
 
-VERSION="2021100201"
+VERSION="2021100202"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -245,6 +245,7 @@ do
     continue
   fi
   TIME=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null --max-time $CURLTIMEOUT | awk -F \, '{print $1}')
+  TIME=$(echo $TIME | awk -F "." '{ print 1 }') # Because bash can't work with float numbers
   if [ "$TIME" -lt "$HTTPRESPTIME" ]
   then
     echo -e "\e[1;33mHTTP Timetotal = $TIME OK\e[0m"
