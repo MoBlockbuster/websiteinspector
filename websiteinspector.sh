@@ -244,9 +244,12 @@ do
     echo "$i HTTP Statuscode = $CODE ERROR. Date: $DATE" >> "${TMPFILE}"
     continue
   fi
+  # curl timetotal outputformat depends on systemlanguage. Englishformat use for floatnumbers the "." as delimiter
+  ORILANG=$(echo $LANG)
+  export LANG=en_US.UTF-8
   TIMERAW=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null --max-time $CURLTIMEOUT)
-  TIME=$(echo $TIMERAW | awk -F "," '{ print $1 }')      # Output from %{time_total} is a float - bash can't work with float numbers
-  TIME2=$(echo $TIMERAW | awk -F "," '{ print $2 }')     # Output from %{time_total} is a float - bash can't work with float numbers
+  TIME=$(echo $TIMERAW | awk -F "." '{ print $1 }')      # Output from %{time_total} is a float - bash can't work with float numbers
+  TIME2=$(echo $TIMERAW | awk -F "." '{ print $2 }')     # Output from %{time_total} is a float - bash can't work with float numbers
   TIMEFINAL=$TIME.$TIME2                                # Output from %{time_total} is a float - bash can't work with float numbers
   if [ "$TIME" -lt "$HTTPRESPTIME" ]
   then
@@ -272,8 +275,8 @@ do
 done
 
 # Check for updates
-ORILANG=$(echo $LANG)
-export LANG=en_US.UTF-8
+#ORILANG=$(echo $LANG)    # step is moved up
+#export LANG=en_US.UTF-8   # step is moved up
 cd `dirname $0` && git remote show origin | grep -q "up to date"
 if [ $? -eq 0 ]
 then
