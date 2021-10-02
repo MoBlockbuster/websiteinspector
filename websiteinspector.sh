@@ -5,7 +5,7 @@
 # Contact: mmarzouki@protonmail.com   #
 #######################################
 
-VERSION="2021081601"
+VERSION="2021100201"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -233,7 +233,15 @@ do
   else
     echo ""
     echo -e "\e[1;34m---URL: $i\e[0m"
-    echo -e "\e[1;31;5mHTTP Statuscode = $CODE NOK\e[0m"
+    echo -e "\e[1;31;5mHTTP Statuscode = $CODE OK -> ERROR\e[0m"
+    grep -q "$i HTTP Statuscode" "${TMPFILE}"
+    if [ $? -eq 0 ]
+    then
+      echo "$i HTTP Statuscode = $CODE Error (is already on the list)"
+      continue
+    fi
+    echo "$i HTTP Statuscode = $CODE OK -> ERROR" | $MAILX -s "HTTP Statuscode $CODE for $i OK -> ERROR" -r ${MAILFROM} ${MAILTO}
+    echo "$i HTTP Statuscode = $CODE ERROR. Date: $DATE" >> "${TMPFILE}"
     continue
   fi
   TIME=$($CURL -L --user-agent "websiteinspector" --write-out "%{time_total}\n" "$i" --silent --output /dev/null --max-time $CURLTIMEOUT | awk -F \, '{print $1}')
@@ -251,23 +259,12 @@ do
       grep -q "$i HTTP Timetotal" "${TMPFILE}"
       if [ $? -eq 0 ]
       then
-        echo "$i HTTP Timetotal = $TIME WARNING (is on the list)"
+        echo "$i HTTP Timetotal = $TIME WARNING (is already on the list)"
         continue
       fi
       echo -e "\e[1;31mHTTP Timetotal = $TIME WARNING\e[0m"
       echo "$i HTTP Timetotal = $TIME WARNING. Date $DATE" >> "${TMPFILE}"
       echo "$i HTTP Timetotal = $TIME WARNING" | $MAILX -s "HTTP TIME $i = $TIME WARNING" -r ${MAILFROM} ${MAILTO}
-  else
-    echo ""
-    echo "---URL: $i"
-    echo "HTTP Statuscode = $CODE ERROR"
-    grep -q "$i HTTP Statuscode" "${TMPFILE}"
-    if [ $? -eq 0 ]
-    then
-      continue
-    fi
-    echo "$i HTTP Statuscode = $CODE OK -> ERROR" | $MAILX -s "HTTP Statuscode $CODE for $i OK -> ERROR" -r ${MAILFROM} ${MAILTO}
-    echo "$i HTTP Statuscode = $CODE ERROR. Date: $DATE" >> "${TMPFILE}"
   fi
 done
 
