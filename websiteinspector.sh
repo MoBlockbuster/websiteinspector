@@ -43,6 +43,7 @@ function current_settings()
   # Show my current settings
   echo -e "\e[1;31m---------------------------\e[0m"
   echo -e "\e[1;33mMy current settings:\e[0m"
+  echo "WEBSITES: $WEBSITES"
   echo "MAILFROM: $MAILFROM"
   echo "MAILTO: $MAILTO"
   echo "TLSWARNING: $TLSTTLWARN"
