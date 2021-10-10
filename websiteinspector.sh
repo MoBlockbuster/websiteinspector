@@ -5,7 +5,7 @@
 # Contact: mmarzouki@protonmail.com   #
 #######################################
 
-VERSION="2021100203"
+VERSION="2021101002"
 WEBARRAY=("")
 WEBCNF="config_websiteinspector.cnf"
 DATE=$(date +%Y-%m-%d)
@@ -293,10 +293,10 @@ then
   fi
 else
   echo ""
-  echo -e "I detected updates for me.\nPlease update websiteinspector with parameter -u" | $MAILX -s "websiteinspector needs update" -r ${MAILFROM} ${MAILTO}
   grep -q "Updates" $TMPFILE
   if [ $? -ne 0 ]
   then
+    echo -e "I detected updates for me.\nPlease update websiteinspector with parameter -u" | $MAILX -s "websiteinspector needs update" -r ${MAILFROM} ${MAILTO}
     echo -e "\e[1;5;31mUpdates are available for me! Start me with parameter -u. Date: $DATE\e[0m" >> ${TMPFILE}
   fi
   export LANG=$ORILANG
