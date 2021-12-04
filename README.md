@@ -1,7 +1,7 @@
 # websiteinspector
-Bashtool to monitor any website for HTTP-CODE, TLS-TTL and the HTTP response time. You will get an mail notification for each alarm.
+Bashtool to monitor any websites for HTTP-CODE, TLS-TTL and the HTTP response time. You will get a mail notification for each alarm.
 
-This tool has been programmed to monitor all of your desired websites. The webinspector detected automatically if a website use HTTPS (443) and also checks the expire of the TLS certificate. If the website use only HTTP (80) the webinspector check the site without the TLS-TTL.
+This tool was programmed to monitor all of your websites. The websiteinspector detects automatically if a website uses HTTPS (443) and also checks the expire of the TLS certificate. If the website uses only HTTP (80) the webinspector checks the site without the TLS-TTL.
 
 ### Requirements:
 - SSH access
@@ -10,19 +10,19 @@ This tool has been programmed to monitor all of your desired websites. The webin
 - Tools: mailx to send mails, curl, host and openssl
 - Create a cronjob
 - Define the variable **MAILFROM** and **MAILTO** in websiteinspector
-- Enter the desired URL in the variable **WEBSITES**. 
+- Enter the URL in the variable **WEBSITES**. 
   - Example for the variable WEBSITES: **WEBSITES="https://github.com http://www.postfix.org"**
 
 ### Information:
-- You can change in config\_websiteinspector.cnf the values for TLS-WARN, TLS-CRIT and HTTP-RESPONSE-TIME
-- The websiteinspector call a website and expect the 200 HTTP-CODE. Each redirect will be followed until the HTTP-CODE 200 is reached
-- If websiteinspector not found an HTTP-CODE 200, this is treated as an error
+- You can change in the config\_websiteinspector.cnf the values for TLS-WARN, TLS-CRIT and HTTP-RESPONSE-TIME
+- The websiteinspector calls a website and expects the 200 HTTP-CODE. Each redirection will be followed until the HTTP-CODE 200 is reached
+- If websiteinspector doesn't find a HTTP-CODE 200, this is treated as an error
 - If the TLS-TTL (SSL certificate expire date) is lower then 14 days and higher then 7 days this will be handled as **warning**
 - If the TLS-TTL (SSL certificate expire date) is lower then 7 days this will be handled as **alarm**
 - If the website takes longer then 3 seconds to load this will be handled as **alarm**
 
 ### Usage:
-- Save the websiteinspector.sh on the server used to monitor other websites
+- Save the websiteinspector.sh on the server which is used to monitor other websites
 - Make the websiteinspector.sh executable
 - **Start the webinspector for the first time, to create his missing configfile**
 - Modify the configfile config\_websiteinspector.cnf for your case. The most important variable that you should adjust is **>> WEBSITE <<**
